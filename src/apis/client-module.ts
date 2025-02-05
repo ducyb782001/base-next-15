@@ -1,4 +1,4 @@
-import { getAPI } from "@/infrastructure/client-axios-instant";
+import { getAPI, postAPI } from "@/infrastructure/client-axios-instant";
 
 const BASE_URL = "https://dummyjson.com/";
 
@@ -23,5 +23,12 @@ export const getProductDetail = () => {
 export const getRecipesDetail = () => {
   return getAPI({
     url: `${BASE_URL}recipes/1?delay=1000`,
+  });
+};
+
+export const createFakeResponse = (submitData, statusCode = "200") => {
+  return postAPI({
+    url: `${BASE_URL}http/${statusCode}/Hello_Peter`,
+    data: submitData,
   });
 };

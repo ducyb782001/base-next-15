@@ -1,16 +1,6 @@
 "use client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import React from "react";
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      staleTime: 60 * 1000,
-    },
-  },
-});
 
 export default function ClientProviders({
   children,
@@ -30,7 +20,7 @@ export default function ClientProviders({
         draggable
         pauseOnHover
       />
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      {children}
     </>
   );
 }

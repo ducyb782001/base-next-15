@@ -30,7 +30,6 @@ export const getAPI = async (options: Options) => {
     return response?.data;
   };
   const onError = async (error: any) => {
-    console.log("🚀 ~ onError ~ error:", error?.response);
     return error?.response?.data;
   };
   return axiosInstance.get(options.url).then(onSuccess).catch(onError);
@@ -45,7 +44,6 @@ export const postAPI = async (options: Options) => {
     return response?.data;
   };
   const onError = async (error: any) => {
-    console.log("🚀 ~ onError ~ error:", error?.response);
     return error?.response?.data;
   };
 
@@ -62,7 +60,6 @@ export const putAPI = async (options: Options) => {
   }
   const onSuccess = (response: any) => response?.data;
   const onError = async (error: any) => {
-    console.log("🚀 ~ onError ~ error:", error?.response);
     return error?.response?.data;
   };
 
@@ -78,7 +75,6 @@ export const patchAPI = async (initData: string, options: Options) => {
   }
   const onSuccess = (response: any) => response?.data;
   const onError = async (error: any) => {
-    console.log("🚀 ~ onError ~ error:", error?.response);
     return error?.response?.data;
   };
 
@@ -94,7 +90,6 @@ export const deleteAPI = async (initData: string, options: Options) => {
   }
   const onSuccess = (response: any) => response?.data;
   const onError = async (error: any) => {
-    console.log("🚀 ~ onError ~ error:", error?.response);
     return error?.response?.data;
   };
 
