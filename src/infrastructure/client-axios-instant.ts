@@ -1,13 +1,28 @@
+import { FAKE_INIT_DATA } from "@/constants";
+import { SupportedProductEnv } from "@/constants/enum/env.enum";
 import axios from "axios";
 
 const axiosInstance = axios.create({});
+
+export function getInitData() {
+  if (process.env.NEXT_PUBLIC_ENV === SupportedProductEnv.LOCAL) {
+    return FAKE_INIT_DATA;
+  }
+  const WebApp = (window as any)?.Telegram?.WebApp;
+
+  if (WebApp) {
+    return WebApp.initData;
+  }
+  return "No init data";
+}
 
 export type Options = {
   url: string;
   data?: any;
 };
 
-export const getAPI = async (initData: string, options: Options) => {
+export const getAPI = async (options: Options) => {
+  const initData = getInitData();
   if (initData) {
     axiosInstance.defaults.headers.initdata = initData;
   }
@@ -21,7 +36,8 @@ export const getAPI = async (initData: string, options: Options) => {
   return axiosInstance.get(options.url).then(onSuccess).catch(onError);
 };
 
-export const postAPI = async (initData: string, options: Options) => {
+export const postAPI = async (options: Options) => {
+  const initData = getInitData();
   if (initData) {
     axiosInstance.defaults.headers.initdata = initData;
   }
@@ -39,7 +55,8 @@ export const postAPI = async (initData: string, options: Options) => {
     .catch(onError);
 };
 
-export const putAPI = async (initData: string, options: Options) => {
+export const putAPI = async (options: Options) => {
+  const initData = getInitData();
   if (initData) {
     axiosInstance.defaults.headers.initdata = initData;
   }

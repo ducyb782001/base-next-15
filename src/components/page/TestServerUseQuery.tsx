@@ -1,24 +1,43 @@
-// import { dehydrate, QueryClient } from "@tanstack/react-query";
+import { getAllRecipes, getRecipesDetail } from "@/apis/client-module";
+import { getAllProducts } from "@/apis/user-module";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
-// export async function getStaticProps() {
-//     const queryClient = new QueryClient()
+export async function getServerSideProps(context) {
+  console.log("🚀 ~ getServerSideProps ~ context:", context);
+  const id = context.params;
+  // Gọi 3 API song song với Promise.allSettled
+  const results = await Promise.allSettled([
+    getAllProducts(),
+    getAllRecipes(),
+    getRecipesDetail(id),
+  ]);
 
-//     await queryClient.prefetchQuery({ queryKey: ['posts'], queryFn: getPosts })
+  // Lấy kết quả thành công hoặc giá trị mặc định nếu thất bại
+  const products = results[0].status === "fulfilled" ? results[0].value : null;
+  const recipes = results[1].status === "fulfilled" ? results[1].value : null;
+  const recipeDetail =
+    results[2].status === "fulfilled" ? results[2].value : null;
 
-//     return {
-//       props: {
-//         dehydratedState: dehydrate(queryClient),
-//       },
-//     }
-//   }
+  return {
+    props: {
+      products,
+      recipes,
+      recipeDetail,
+    },
+  };
+}
 
-function TestServerUseQuery() {
+export default function TestServerUseQuery(props) {
+  const { data } = useQuery({
+    queryKey: ["posts"],
+    queryFn: getAllProducts,
+    initialData: props.recipeDetail,
+  });
+
   return (
     <div>
-      <div>TestServerUseQuery</div>
+      <div>ABCD</div>
     </div>
   );
 }
-
-export default TestServerUseQuery;

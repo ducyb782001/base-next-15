@@ -2,42 +2,41 @@
 
 import React, { useState } from "react";
 import React19New from "../news/React19New";
-import { useQuery } from "@tanstack/react-query";
-import {
-  getAllProducts,
-  getAllRecipes,
-  getProductDetail,
-  getRecipesDetail,
-} from "@/apis/user-module";
 import DebouncedButton from "../common/DebouncedButton";
 import { toast } from "react-toastify";
 import PrimaryInputCheckbox from "../common/PrimaryInputCheckbox";
-import TestClientUseEffect from "./TestClientUseEffect";
-import TestServerUseQuery from "./TestServerUseQuery";
+import useSWR from "swr";
+import Link from "next/link";
+import {
+  getAllProducts,
+  getAllRecipes,
+  getRecipesDetail,
+} from "@/apis/client-module";
 
 function HomePage() {
-  // const { isLoading: isLoading1 } = useQuery({
-  //   queryKey: ["getAllProducts"],
-  //   queryFn: () => getAllProducts(),
-  // });
-  // const { isLoading: isLoading2 } = useQuery({
-  //   queryKey: ["getAllRecipies"],
-  //   queryFn: () => getAllRecipes(),
-  // });
-  // const { isLoading: isLoading3 } = useQuery({
-  //   queryKey: ["getProductDetail"],
-  //   queryFn: () => getProductDetail(),
-  // });
-  // const { isLoading: isLoading4 } = useQuery({
-  //   queryKey: ["getRecipesDetail"],
-  //   queryFn: () => getRecipesDetail(),
-  // });
-
   const [isCheckInput, setIsCheckInput] = useState(false);
+  const fetcher = async ([url, limit]) => {
+    const res = await fetch(`${url}?_limit=${limit}`);
+    return res.json();
+  };
 
+  const { data: recipes, isLoading } = useSWR([`getAllRecipes`], getAllRecipes);
+  const { isLoading: isLoadingTodos } = useSWR(
+    [`getAllProducts`],
+    getAllProducts
+  );
+  const { isLoading: isLoadingPhotos } = useSWR(
+    [`getRecipesDetail`],
+    getRecipesDetail
+  );
   return (
     <div>
-      <div>HomePage</div>
+      <div>HomePage isLoading : {isLoading ? "true" : "false"}</div>
+      <div>isLoadingTodos: {isLoadingTodos ? "true" : "false"}</div>
+      <div>isLoadingPhotos: {isLoadingPhotos ? "true" : "false"}</div>
+      <Link className="bg-blue-400 mb-10" href={`/photos`}>
+        Go to photo
+      </Link>
       <DebouncedButton
         onClick={() => {
           toast.success("LALA");
@@ -60,13 +59,7 @@ function HomePage() {
           setIsCheckInput(!isCheckInput);
         }}
       />
-      {/* <div>isLoading1: {isLoading1 ? "TRUE" : "FALSE"}</div>
-      <div>isLoading2: {isLoading2 ? "TRUE" : "FALSE"}</div>
-      <div>isLoading3: {isLoading3 ? "TRUE" : "FALSE"}</div>
-      <div>isLoading4: {isLoading4 ? "TRUE" : "FALSE"}</div> */}
       <React19New />
-      {/* <TestClientUseEffect /> */}
-      <TestServerUseQuery />
     </div>
   );
 }
