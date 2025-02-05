@@ -59,7 +59,6 @@ function HomePage() {
           setIsCheckInput(!isCheckInput);
         }}
       />
-      <React19New />
     </div>
   );
 }
