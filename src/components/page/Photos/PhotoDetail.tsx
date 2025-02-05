@@ -1,8 +1,8 @@
 "use client";
 
 import DebouncedButton from "@/components/common/DebouncedButton";
-import { useRouter } from "next/navigation";
-import React from "react";
+import { useParams, useRouter } from "next/navigation";
+import React, { useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import {
   createFakeResponse,
@@ -15,19 +15,22 @@ import { showErrorData } from "@/libs";
 import { StatusCodes } from "http-status-codes";
 
 function PhotoDetail() {
-  const { data: recipes, isLoading } = useSWR("getAllRecipes", getAllRecipes, {
+  const { id } = useParams();
+  const { isLoading } = useSWR("getAllRecipes", getAllRecipes, {
     revalidateOnFocus: false,
   });
+  const [recipes, setRecipes] = useState(null);
   const { isLoading: isLoadingTodos } = useSWR(
     "getAllProducts",
     getAllProducts,
     { revalidateOnFocus: false }
   );
-  const { isLoading: isLoadingPhotos } = useSWR(
-    [`getRecipesDetail`],
-    getRecipesDetail,
+  const { data: photos, isLoading: isLoadingPhotos } = useSWR(
+    id && recipes ? "getRecipesDetail" : null, // Chỉ fetch nếu có id và recipes
+    () => getRecipesDetail(id), // ✅ Đã return dữ liệu từ API
     { revalidateOnFocus: false }
   );
+
   const { mutate } = useSWRConfig();
   const router = useRouter();
 
@@ -67,7 +70,7 @@ function PhotoDetail() {
       <div>isLoadingPhotos: {isLoadingPhotos ? "true" : "false"}</div>
       <DebouncedButton
         onClick={() => {
-          mutate("getAllProducts");
+          setRecipes(1);
         }}
       >
         Mutate products - todos

@@ -20,9 +20,9 @@ export const getProductDetail = () => {
   });
 };
 
-export const getRecipesDetail = () => {
+export const getRecipesDetail = (id: any) => {
   return getAPI({
-    url: `${BASE_URL}recipes/1?delay=1000`,
+    url: `${BASE_URL}recipes/${id}?delay=1000`,
   });
 };
 

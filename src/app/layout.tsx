@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+
 import "@/styles/globals.css";
+import "@/styles/table.css";
+import "@/styles/skeleton-loading.css";
 import "react-toastify/dist/ReactToastify.css";
 import "@reach/dialog/styles.css";
 
