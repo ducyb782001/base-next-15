@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+echo "🔍 Running ESLint..."
+yarn lint || { echo "❌ ESLint found issues when yarn lint. Fix them before committing."; exit 1; }
+echo "✅ ESLint passed!"
